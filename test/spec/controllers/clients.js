@@ -1,220 +1,244 @@
-'use strict'
+'use strict';
 /* global sinon: false */
 
 describe('Controller: ClientsCtrl', function () {
-  // load the controller's module
-  beforeEach(module('openhimConsoleApp'))
+	// load the controller's module
+	beforeEach(module('openhimConsoleApp'));
 
-  // setup config constant to be used for API server details
-  beforeEach(function () {
-    module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
-    })
-  })
+	// setup config constant to be used for API server details
+	beforeEach(function () {
+		module('openhimConsoleApp', function ($provide) {
+			$provide.constant('config', {
+				protocol: 'https',
+				host: 'localhost',
+				hostPath: '',
+				port: 8080,
+				title: 'Title',
+				footerTitle: 'FooterTitle',
+				footerPoweredBy: 'FooterPoweredBy',
+			});
+		});
+	});
 
-  var scope, createController, httpBackend, modalSpy
-  var meResponse = {
-    user: {
-      email: 'test@user.org',
-      firstname: 'test',
-      surname: 'test',
-      groups: [
-        'admin'
-      ]
-    }
-  }
+	var scope, createController, httpBackend, modalSpy;
+	var meResponse = {
+		user: {
+			email: 'test@user.org',
+			firstname: 'test',
+			surname: 'test',
+			groups: ['admin'],
+		},
+	};
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
-    httpBackend = $httpBackend
+	// Initialize the controller and a mock scope
+	beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+		httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
-      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
-    ])
+		$httpBackend.when('GET', new RegExp('.*/clients')).respond([
+			{
+				clientID: 'test1',
+				clientDomain: 'test1.openhim.org',
+				name: 'Test 1',
+				roles: ['test'],
+				passwordAlgorithm: 'sha512',
+				passwordHash: '1234',
+				passwordSalt: '1234',
+			},
+			{
+				clientID: 'test2',
+				clientDomain: 'test2.openhim.org',
+				name: 'Test 2',
+				roles: ['test'],
+				passwordAlgorithm: 'sha512',
+				passwordHash: '1234',
+				passwordSalt: '1234',
+			},
+		]);
 
-    $httpBackend.when('GET', new RegExp('.*/channels')).respond([])
+		$httpBackend.when('GET', new RegExp('.*/channels')).respond([]);
 
-    $httpBackend.when('GET', new RegExp('.*/authentication/types')).respond(['basic-auth', 'jwt-auth', 'mutual-tls-auth', 'custom-token-auth'])
+		$httpBackend
+			.when('GET', new RegExp('.*/authentication/types'))
+			.respond(['basic-auth', 'jwt-auth', 'mutual-tls-auth', 'custom-token-auth']);
 
-    $httpBackend.when('GET', new RegExp('.*/roles')).respond([
-      { name: 'test', clients: ['test'], channels: ['test'] }
-    ])
+		$httpBackend
+			.when('GET', new RegExp('.*/roles'))
+			.respond([{ name: 'test', clients: ['test'], channels: ['test'] }]);
 
-    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([])
+		$httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([]);
 
-    $httpBackend.when('PUT', new RegExp('.*/roles/test')).respond({})
+		$httpBackend.when('PUT', new RegExp('.*/roles/test')).respond({});
 
-    $httpBackend.when('POST', new RegExp('.*/roles')).respond({})
+		$httpBackend.when('POST', new RegExp('.*/roles')).respond({});
 
-    $httpBackend.when('GET', new RegExp('.*views/confirmModal.html')).respond({})
-    $httpBackend.when('GET', new RegExp('.*views/rolemodal.html')).respond({})
+		$httpBackend.when('GET', new RegExp('.*views/confirmModal.html')).respond({});
+		$httpBackend.when('GET', new RegExp('.*views/rolemodal.html')).respond({});
 
-    modalSpy = sinon.spy($uibModal, 'open')
+		modalSpy = sinon.spy($uibModal, 'open');
 
-    createController = function () {
-      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+		createController = function () {
+			$httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse);
 
-      scope = $rootScope.$new()
-      return $controller('ClientsCtrl', { $scope: scope })
-    }
-  }))
+			scope = $rootScope.$new();
+			return $controller('ClientsCtrl', { $scope: scope });
+		};
+	}));
 
-  afterEach(function () {
-    httpBackend.verifyNoOutstandingExpectation()
-    httpBackend.verifyNoOutstandingRequest()
-  })
+	afterEach(function () {
+		httpBackend.verifyNoOutstandingExpectation();
+		httpBackend.verifyNoOutstandingRequest();
+	});
 
-  it('should attach a list of clients to the scope', function () {
-    httpBackend.expectGET(new RegExp('.*/clients'))
-    httpBackend.expectGET(new RegExp('.*/channels'))
-    httpBackend.expectGET(new RegExp('.*/roles'))
-    createController()
-    httpBackend.flush()
-    scope.clients.length.should.equal(2)
-  })
+	it('should attach a list of clients to the scope', function () {
+		httpBackend.expectGET(new RegExp('.*/clients'));
+		httpBackend.expectGET(new RegExp('.*/channels'));
+		httpBackend.expectGET(new RegExp('.*/roles'));
+		createController();
+		httpBackend.flush();
+		scope.clients.length.should.equal(2);
+	});
 
-  it('should open a modal to confirm deletion of a client', function () {
-    createController()
-    httpBackend.flush()
+	it('should open a modal to confirm deletion of a client', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.confirmClientDelete(scope.clients[0])
-    modalSpy.should.have.been.calledOnce
-  })
+		scope.confirmClientDelete(scope.clients[0]);
+		modalSpy.should.have.been.calledOnce;
+	});
 
-  it('should open a modal to add a client', function () {
-    createController()
-    scope.addClient()
-    modalSpy.should.have.been.calledOnce
-    httpBackend.flush()
-  })
+	it('should open a modal to add a client', function () {
+		createController();
+		scope.addClient();
+		modalSpy.should.have.been.calledOnce;
+		httpBackend.flush();
+	});
 
-  it('should open a modal to edit a client', function () {
-    createController()
-    scope.editClient()
-    modalSpy.should.have.been.calledOnce
-    httpBackend.flush()
-  })
+	it('should open a modal to edit a client', function () {
+		createController();
+		scope.editClient();
+		modalSpy.should.have.been.calledOnce;
+		httpBackend.flush();
+	});
 
-  var client = { clientID: 'test' }
-  var role = { name: 'test', displayName: 'dispTest' }
-  var channel = { name: 'test' }
+	var client = { clientID: 'test' };
+	var role = { name: 'test', displayName: 'dispTest' };
+	var channel = { name: 'test' };
 
-  it('should assign a role to a client', function () {
-    createController()
+	it('should assign a role to a client', function () {
+		createController();
 
-    scope.clientRoles = []
+		scope.clientRoles = [];
 
-    scope.assignRoleToClient(client, role, true)
-    scope.clientRoles.should.have.property('testtest', true)
-    httpBackend.flush()
-  })
+		scope.assignRoleToClient(client, role, true);
+		scope.clientRoles.should.have.property('testtest', true);
+		httpBackend.flush();
+	});
 
-  it('should remove a role from a client', function () {
-    createController()
+	it('should remove a role from a client', function () {
+		createController();
 
-    scope.clientRoles = []
+		scope.clientRoles = [];
 
-    scope.removeRoleFromClient(client, role, true)
-    scope.clientRoles.should.have.property('testtest', false)
+		scope.removeRoleFromClient(client, role, true);
+		scope.clientRoles.should.have.property('testtest', false);
 
-    httpBackend.flush()
-  })
+		httpBackend.flush();
+	});
 
-  it('should toggle edit clients from true to false', function () {
-    createController()
-    httpBackend.flush()
+	it('should toggle edit clients from true to false', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.editClients = true
+		scope.editClients = true;
 
-    scope.toggleEditClients()
-    scope.editClients.should.equal(false)
-  })
+		scope.toggleEditClients();
+		scope.editClients.should.equal(false);
+	});
 
-  it('should assign a role to a channel', function () {
-    createController()
+	it('should assign a role to a channel', function () {
+		createController();
 
-    scope.channelRoles = []
+		scope.channelRoles = [];
 
-    scope.assignRoleToChannel(channel, role, true)
-    scope.channelRoles.should.have.property('testtest', true)
-    httpBackend.flush()
-  })
+		scope.assignRoleToChannel(channel, role, true);
+		scope.channelRoles.should.have.property('testtest', true);
+		httpBackend.flush();
+	});
 
-  it('should remove a role from a channel', function () {
-    createController()
+	it('should remove a role from a channel', function () {
+		createController();
 
-    scope.channelRoles = []
+		scope.channelRoles = [];
 
-    scope.removeAssignRoleFromChannel(channel, role, true)
-    scope.channelRoles.should.have.property('testtest', false)
+		scope.removeAssignRoleFromChannel(channel, role, true);
+		scope.channelRoles.should.have.property('testtest', false);
 
-    httpBackend.flush()
-  })
+		httpBackend.flush();
+	});
 
-  it('should save existing name of a role', function () {
-    createController()
-    httpBackend.flush()
+	it('should save existing name of a role', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.roles[0].name = 'dispTest'
+		scope.roles[0].name = 'dispTest';
 
-    scope.changeRoleName(role)
-    scope.nameSaved.should.have.property('dispTest', true)
-  })
+		scope.changeRoleName(role);
+		scope.nameSaved.should.have.property('dispTest', true);
+	});
 
-  it('should save the new name of a role', function () {
-    createController()
-    httpBackend.flush()
+	it('should save the new name of a role', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.roles[0].name = 'test'
+		scope.roles[0].name = 'test';
 
-    scope.changeRoleName(role)
-    scope.nameSaved.should.have.property('dispTest', true)
-    httpBackend.flush()
-  })
+		scope.changeRoleName(role);
+		scope.nameSaved.should.have.property('dispTest', true);
+		httpBackend.flush();
+	});
 
-  it('should toggle edit role names from true to false', function () {
-    createController()
-    httpBackend.flush()
+	it('should toggle edit role names from true to false', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.editRoleNames = true
+		scope.editRoleNames = true;
 
-    scope.toggleEditRoleNames()
-    scope.editRoleNames.should.equal(false)
-  })
+		scope.toggleEditRoleNames();
+		scope.editRoleNames.should.equal(false);
+	});
 
-  it('should open a modal to add a role', function () {
-    createController()
-    httpBackend.flush()
+	it('should open a modal to add a role', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.addRole()
-    modalSpy.should.have.been.calledOnce
-    const modalCall = modalSpy.getCall(0)
-    modalCall.args[0].should.have.property('template')
-    modalCall.args[0].controller.name.should.equal('RoleModalCtrl')
-    modalCall.args[0].should.have.property('backdrop', 'static')
-    modalCall.args[0].should.have.property('keyboard', false)
-  })
+		scope.addRole();
+		modalSpy.should.have.been.calledOnce;
+		const modalCall = modalSpy.getCall(0);
+		modalCall.args[0].should.have.property('template');
+		modalCall.args[0].controller.name.should.equal('RoleModalCtrl');
+		modalCall.args[0].should.have.property('backdrop', 'static');
+		modalCall.args[0].should.have.property('keyboard', false);
+	});
 
-  it('should open a modal to edit a role', function () {
-    createController()
-    httpBackend.flush()
+	it('should open a modal to edit a role', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.editRole(role)
-    modalSpy.should.have.been.calledOnce
-    const modalCall = modalSpy.getCall(0)
-    modalCall.args[0].should.have.property('template')
-    modalCall.args[0].controller.name.should.equal('RoleModalCtrl')
-    modalCall.args[0].should.have.property('backdrop', 'static')
-    modalCall.args[0].should.have.property('keyboard', false)
-    modalCall.args[0].resolve.role().should.deep.equal(role)
-  })
+		scope.editRole(role);
+		modalSpy.should.have.been.calledOnce;
+		const modalCall = modalSpy.getCall(0);
+		modalCall.args[0].should.have.property('template');
+		modalCall.args[0].controller.name.should.equal('RoleModalCtrl');
+		modalCall.args[0].should.have.property('backdrop', 'static');
+		modalCall.args[0].should.have.property('keyboard', false);
+		modalCall.args[0].resolve.role().should.deep.equal(role);
+	});
 
-  it('should create a delete popup to confirm delete and thereafter delete the role', function () {
-    createController()
-    httpBackend.flush()
+	it('should create a delete popup to confirm delete and thereafter delete the role', function () {
+		createController();
+		httpBackend.flush();
 
-    scope.confirmRoleDelete(role)
-    modalSpy.should.have.been.calledOnce
-  })
-})
+		scope.confirmRoleDelete(role);
+		modalSpy.should.have.been.calledOnce;
+	});
+});

@@ -3,7 +3,25 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
+const fs = require('fs')
+const path = require('path')
+
+// Find the built bundle files dynamically
+function getDistFiles() {
+  const distPath = path.resolve(__dirname, 'dist')
+  if (!fs.existsSync(distPath)) {
+    return []
+  }
+
+  const files = fs.readdirSync(distPath)
+  return files
+    .filter(f => f.endsWith('.js') && !f.endsWith('.map'))
+    .map(f => `dist/${f}`)
+}
+
 module.exports = function (config) {
+  const distFiles = getDistFiles()
+
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: '',
@@ -16,8 +34,8 @@ module.exports = function (config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/moment/moment.js',
-      'dist/bundle.js',
-      { pattern: 'dist/bundle.js.map', included: false, watched: false },
+      ...distFiles,
+      { pattern: 'dist/*.map', included: false, watched: false },
       'dist/index.html',
       { pattern: 'dist/fonts/*', watched: false, included: false, served: true, nocache: false },
       'test/spec/controllers/*.js',
@@ -32,7 +50,7 @@ module.exports = function (config) {
     exclude: [],
 
     captureTimeout: 300000,
-    browserDisconnectTolerance: 3, 
+    browserDisconnectTolerance: 3,
     browserDisconnectTimeout : 300000,
     browserNoActivityTimeout : 300000,
 

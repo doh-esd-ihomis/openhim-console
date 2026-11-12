@@ -10,13 +10,14 @@ npm run start:dev
 
 This starts the webpack-dev-server (typically on port 8080 or 9000 depending on config). Let me check the webpack dev config to confirm the port:
 
-  Searched for 1 pattern, read 1 file
+Searched for 1 pattern, read 1 file
 
 The dev server runs on port 9000 with hot reload. Use:
 
 npm run start:dev
 
 This will:
+
 - Start webpack-dev-server on http://localhost:9000
 - Open browser automatically (open: true)
 - Enable hot module replacement (hot: true)
@@ -27,5 +28,5 @@ npm run build:prod && npm start
 This builds the production bundle and serves it via http-server on port 9000.
 
 For running tests:
-npm test           # single run
+npm test # single run
 npm run test:watch # watch mode

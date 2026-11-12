@@ -4,12 +4,12 @@
 
 This application provides a web application to configure and manage the [OpenHIM-core component](https://github.com/jembi/openhim-core-js). It provides the following features:
 
-* Configure and manage OpenHIM channels
-* View logged transactions
-* Configure clients that can access particular routes
-* Monitor the operations of the OpenHIM application
-* Managing the security infrastructure
-* Importing and exporting OpenHIM server configuration
+- Configure and manage OpenHIM channels
+- View logged transactions
+- Configure clients that can access particular routes
+- Monitor the operations of the OpenHIM application
+- Managing the security infrastructure
+- Importing and exporting OpenHIM server configuration
 
 See the [development road-map](http://openhim.org/docs/introduction/roadmap) for more details on what is to come!
 
@@ -59,6 +59,7 @@ docker exec -it openhim-console bash
 apt-get update && apt-get install vim -y
 vi /usr/share/nginx/html/config/default.json
 ```
+
 Or the sed command can be used
 
 ```sh
@@ -68,29 +69,29 @@ Or the sed command can be used
 
 Your file should look something like this:
 
-``` json
+```json
 {
-  "protocol": "https", // Change the protocol to 'http' when the OpenHIM core API protocol is 'http'. The default OpenHIM core API protocol is 'https'
-  "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publicly accessible)
-  "port": 8080, // change this to the API port of the OpenHIM-core server, default is 8080
-  "title": "OpenHIM Admin Console", // You may change this to customize the title of the OpenHIM-console instance
-  "footerTitle": "OpenHIM Administration Console", // You may change this to customize the footer of the OpenHIM-console instance
-  "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
-  "loginBanner": "", // add text here that you want to appear on the login screen, if any.
-  "showLoginForm": true, // this could be disabled in favor of a SSO using keycloak
-  "mediatorLastHeartbeatWarningSeconds": 60, // Mediator heartbeat check intervals to issue a warning status
-  "mediatorLastHeartbeatDangerSeconds": 120, // Mediator heartbeat check intervals to issue a danger status
-  "ssoEnabled": false, // enable SSO with Keycloak
-  "keyCloakUrl": "http://localhost:9088", // Keycloak URL
-  "keyCloakRealm": "platform-realm", // Keycloak Realm name
-  "keyCloakClientId": "openhim-oauth" // Keycloak client ID
+	"protocol": "https", // Change the protocol to 'http' when the OpenHIM core API protocol is 'http'. The default OpenHIM core API protocol is 'https'
+	"host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publicly accessible)
+	"port": 8080, // change this to the API port of the OpenHIM-core server, default is 8080
+	"title": "OpenHIM Admin Console", // You may change this to customize the title of the OpenHIM-console instance
+	"footerTitle": "OpenHIM Administration Console", // You may change this to customize the footer of the OpenHIM-console instance
+	"footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
+	"loginBanner": "", // add text here that you want to appear on the login screen, if any.
+	"showLoginForm": true, // this could be disabled in favor of a SSO using keycloak
+	"mediatorLastHeartbeatWarningSeconds": 60, // Mediator heartbeat check intervals to issue a warning status
+	"mediatorLastHeartbeatDangerSeconds": 120, // Mediator heartbeat check intervals to issue a danger status
+	"ssoEnabled": false, // enable SSO with Keycloak
+	"keyCloakUrl": "http://localhost:9088", // Keycloak URL
+	"keyCloakRealm": "platform-realm", // Keycloak Realm name
+	"keyCloakClientId": "openhim-oauth" // Keycloak client ID
 }
 ```
 
 Now, navigate to your web server and you should see the OpenHIM-console load (eg. `http://localhost:9000`) and login. The default username and password are:
 
-* username: `root@openhim.org`
-* password: `openhim-password`
+- username: `root@openhim.org`
+- password: `openhim-password`
 
 You will be prompted to change this.
 
@@ -160,27 +161,27 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
 
 1. [Optional] The Vagrant file provisions the VM with the latest source code from master and attempts to compile the RPM package for you. However in the event an error occurs, or if you prefer to have manual control over the process, then you'll need to do the following:
 
-    * Remote into the VM: `vagrant ssh`
-    * Download or sync all source code into VM.
-    * Ensure all dependencies are installed.
+    - Remote into the VM: `vagrant ssh`
+    - Download or sync all source code into VM.
+    - Ensure all dependencies are installed.
 
     ```bash
     npm i && npm i speculate
     ```
 
-    * Run speculate to generate the SPEC files needed to build the RPM package.
+    - Run speculate to generate the SPEC files needed to build the RPM package.
 
     ```bash
     npm run spec
     ```
 
-    * Ensure the directory with the source code is linked to the rpmbuild directory - the     folder RPMBUILD will use.
+    - Ensure the directory with the source code is linked to the rpmbuild directory - the folder RPMBUILD will use.
 
     ```bash
     ln -s ~/openhim-console ~/rpmbuild
     ```
 
-    * Build RPM package.
+    - Build RPM package.
 
     ```bash
     rpmbuild -bb ~/rpmbuild/SPECS/openhim-console.spec
@@ -194,7 +195,7 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
     curl http://localhost:9000
     ```
 
-    Note: In order for openhim-console to run successfully, you'll need to point it to a    valid instance of Openhim-core or install it locally:
+    Note: In order for openhim-console to run successfully, you'll need to point it to a valid instance of Openhim-core or install it locally:
 
 1. How to check the logs?
 
