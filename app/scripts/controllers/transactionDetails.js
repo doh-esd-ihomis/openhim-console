@@ -178,6 +178,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsRerunModal,
       controller: TransactionsRerunModalCtrl,
       resolve: {
@@ -201,6 +203,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   $scope.viewAddReqResDetails = function (record, channel, recordType, index) {
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsAddReqResModal,
       controller: TransactionsAddReqResModalCtrl,
       windowClass: 'modal-fullview',
@@ -234,6 +238,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   $scope.viewBodyDetails = function (type, content, headers) {
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',

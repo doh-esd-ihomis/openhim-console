@@ -48,6 +48,7 @@ describe('Controller: ClientsCtrl', function () {
     $httpBackend.when('POST', new RegExp('.*/roles')).respond({})
 
     $httpBackend.when('GET', new RegExp('.*views/confirmModal.html')).respond({})
+    $httpBackend.when('GET', new RegExp('.*views/rolemodal.html')).respond({})
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -182,60 +183,31 @@ describe('Controller: ClientsCtrl', function () {
     scope.editRoleNames.should.equal(false)
   })
 
-  it('should create a new role', function () {
+  it('should open a modal to add a role', function () {
     createController()
     httpBackend.flush()
-
-    scope.newRolesIndex = 0
-    scope.newRoles.name = 'testNew'
 
     scope.addRole()
-    scope.newRoles[0].should.have.property('idName', 'Role0')
-    scope.newRoles[0].should.have.property('index', 0)
-    scope.newRoles[0].should.have.property('name', 'testNew')
+    modalSpy.should.have.been.calledOnce
+    const modalCall = modalSpy.getCall(0)
+    modalCall.args[0].should.have.property('template')
+    modalCall.args[0].controller.name.should.equal('RoleModalCtrl')
+    modalCall.args[0].should.have.property('backdrop', 'static')
+    modalCall.args[0].should.have.property('keyboard', false)
   })
 
-  it('should assign a client to a new role successfully', function () {
+  it('should open a modal to edit a role', function () {
     createController()
     httpBackend.flush()
 
-    scope.assignClientToNewRole(client, role)
-    scope.clientRoles.should.have.property('testtest', true)
-  })
-
-  it('should assign a new role to a channel successfully', function () {
-    createController()
-    httpBackend.flush()
-
-    scope.assignNewRoleToChannel(channel, role)
-    scope.channelRoles.should.have.property('testtest', true)
-  })
-
-  it('should save a new role', function () {
-    createController()
-    httpBackend.flush()
-
-    scope.newRoles = []
-    scope.newRoles[0] = { name: 'test' }
-    scope.newRoles[1] = { name: 'test2' }
-
-    scope.saveNewRole(role)
-    httpBackend.flush()
-    scope.newRoles.length.should.equal(1)
-    scope.newRoles[0].should.have.property('name', 'test2')
-  })
-
-  it('should remove a new role', function () {
-    createController()
-    httpBackend.flush()
-
-    scope.newRoles = []
-    scope.newRoles[0] = { name: 'test' }
-    scope.newRoles[1] = { name: 'test2' }
-
-    scope.removeNewRole(role)
-    scope.newRoles.length.should.equal(1)
-    scope.newRoles[0].should.have.property('name', 'test2')
+    scope.editRole(role)
+    modalSpy.should.have.been.calledOnce
+    const modalCall = modalSpy.getCall(0)
+    modalCall.args[0].should.have.property('template')
+    modalCall.args[0].controller.name.should.equal('RoleModalCtrl')
+    modalCall.args[0].should.have.property('backdrop', 'static')
+    modalCall.args[0].should.have.property('keyboard', false)
+    modalCall.args[0].resolve.role().should.deep.equal(role)
   })
 
   it('should create a delete popup to confirm delete and thereafter delete the role', function () {

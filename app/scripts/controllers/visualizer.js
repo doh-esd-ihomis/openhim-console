@@ -201,6 +201,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
@@ -217,6 +219,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
@@ -233,6 +237,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
@@ -353,6 +359,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

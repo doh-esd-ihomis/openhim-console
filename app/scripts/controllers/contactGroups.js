@@ -34,6 +34,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.addContactGroup = function () {
     Alerting.AlertReset()
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: contactGroupsModal,
       controller: ContactGroupsModalCtrl,
       resolve: {
@@ -47,6 +49,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     Alerting.AlertReset()
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: contactGroupsModal,
       controller: ContactGroupsModalCtrl,
       resolve: {
@@ -95,6 +99,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

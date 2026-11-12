@@ -286,6 +286,8 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

@@ -31,6 +31,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     $uibModal.open({
       template: channelsmodal,
       controller: ChannelsModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         channel: function () { },
         channelDuplicate: function () { },
@@ -45,6 +47,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     $uibModal.open({
       template: channelsmodal,
       controller: ChannelsModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         channel: function () {
           return channel
@@ -63,6 +67,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     $uibModal.open({
       template: channelsmodal,
       controller: ChannelsModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         channel: function () { },
         channelDuplicate: function () {

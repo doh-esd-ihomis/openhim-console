@@ -808,6 +808,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     const transactionsSelected = $scope.transactionsSelected
     const rerunTransactionsSelected = $scope.rerunTransactionsSelected
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsRerunModal,
       controller: TransactionsRerunModalCtrl,
       scope: $scope,

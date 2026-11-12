@@ -1,6 +1,7 @@
 import clientsmodal from '~/views/clientsmodal'
 import confirmModal from '~/views/confirmModal'
-import { ClientsModalCtrl, ConfirmModalCtrl } from './'
+import rolemodal from '~/views/rolemodal'
+import { ClientsModalCtrl, ConfirmModalCtrl, RoleModalCtrl } from './'
 
 export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Alerting, Notify) {
   const queryError = function (err) {
@@ -48,6 +49,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $uibModal.open({
       template: clientsmodal,
       controller: ClientsModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         client: function () { }
       }
@@ -61,6 +64,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $uibModal.open({
       template: clientsmodal,
       controller: ClientsModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         client: function () {
           return client
@@ -70,11 +75,42 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   }
   /* -------------------------End Add/edit client popup modal---------------------------- */
 
+  /* -------------------------Add/edit role popup modal---------------------------- */
+  $scope.editRole = function (role) {
+    Alerting.AlertReset()
+    $scope.serverRestarting = false
+
+    $uibModal.open({
+      template: rolemodal,
+      controller: RoleModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        role: function () {
+          return role
+        }
+      }
+    })
+  }
+
+  $scope.addRole = function () {
+    Alerting.AlertReset()
+    $scope.serverRestarting = false
+
+    $uibModal.open({
+      template: rolemodal,
+      controller: RoleModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
+      resolve: {
+        role: function () { }
+      }
+    })
+  }
+  /* -------------------------End Add/edit role popup modal---------------------------- */
+
   /* ------------------------------------------------------------------- */
   /* ----------------------------------Roles---------------------------- */
-  $scope.addNewRole = false
-  $scope.newRoles = []
-  $scope.newRolesIndex = 0
 
   const apiCall = function (method, parameters, body, callback) {
     const success = function () {
@@ -265,67 +301,6 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $scope.nameSaved = []
   }
 
-  $scope.addRole = function () {
-    Alerting.AlertReset()
-    $scope.newRoles.push(
-      {
-        idName: 'Role' + $scope.newRolesIndex,
-        index: $scope.newRolesIndex++,
-        name: $scope.newRoles.name
-      })
-  }
-
-  $scope.assignClientToNewRole = function (client, role) {
-    if (!role.name) {
-      Alerting.AlertReset()
-      return Alerting.AlertAddMsg('role', 'danger', 'Please name the Role before assigning Clients/Channels')
-    }
-    if (!role.clients) {
-      role.clients = [] // if the role has no clients, initialize the array
-    }
-    role.clients.push({ _id: client._id, name: client.clientID })
-    $scope.clientRoles[client.clientID + role.name] = true
-  }
-
-  $scope.assignNewRoleToChannel = function (channel, role) {
-    if (!role.name) {
-      Alerting.AlertReset()
-      return Alerting.AlertAddMsg('role', 'danger', 'Please name the Role before assigning Clients/Channels')
-    }
-    if (!role.channels) {
-      role.channels = [] // if the role has no channels, initialize the array
-    }
-    role.channels.push({ _id: channel._id, name: channel.name })
-    $scope.channelRoles[channel.name + role.name] = true
-  }
-
-  const saveNewRoleCallback = function (err, role) {
-    if (err) {
-      Alerting.AlertReset()
-      return Alerting.AlertAddMsg('role', 'danger', 'Saving new role failed: ' + err.data)
-    }
-    Alerting.AlertReset()
-    Alerting.AlertAddMsg('role', 'success', 'Role with name "' + role.name + '" successfully created.')
-    Notify.notify('clientsChanged')
-    $scope.removeNewRole(role)
-  }
-
-  $scope.saveNewRole = function (role) {
-    apiCall('save', { name: null }, role, saveNewRoleCallback)
-  }
-
-  $scope.removeNewRole = function (role) {
-    let spliceIndex = -1
-
-    for (let i = 0; i < $scope.newRoles.length; i++) {
-      if ($scope.newRoles[i].name === role.name) {
-        spliceIndex = i
-        break
-      }
-    }
-    $scope.newRoles.splice(spliceIndex, 1)
-  }
-
   const removeRoleCallback = function (err) {
     if (err) {
       Alerting.AlertReset()
@@ -365,6 +340,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
+      backdrop: 'static',
+      keyboard: false,
       resolve: {
         confirmObject: function () {
           return deleteObject

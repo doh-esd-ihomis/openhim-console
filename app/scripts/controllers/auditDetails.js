@@ -56,6 +56,8 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
 
   $scope.viewContentDetails = function (type, content) {
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: auditsContentModal,
       controller: AuditsContentModalCtrl,
       resolve: {

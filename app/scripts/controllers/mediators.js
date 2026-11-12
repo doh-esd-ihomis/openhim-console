@@ -61,6 +61,8 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {
@@ -86,6 +88,8 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     Alerting.AlertReset()
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: mediatorConfigModal,
       controller: MediatorConfigModalCtrl,
       resolve: {

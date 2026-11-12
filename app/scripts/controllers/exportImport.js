@@ -50,6 +50,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   const openValidationModal = function () {
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: exportImportModal,
       controller: ExportImportModalCtrl,
       resolve: {
@@ -216,6 +218,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.viewRecordDetails = function (event, type, content) {
     event.preventDefault()
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',

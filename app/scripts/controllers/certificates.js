@@ -254,6 +254,8 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: 'ConfirmModalCtrl',
       resolve: {
@@ -322,6 +324,8 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     $scope.serverRestarting = false
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: certificateModal,
       controller: CertificatesModalCtrl,
       resolve: {

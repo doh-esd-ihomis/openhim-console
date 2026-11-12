@@ -118,7 +118,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         kafkaClientId: '',
         kafkaTopic: '',
         waitPrimaryResponse: false,
-        statusCodesCheck: '',
+        statusCodesCheck: ''
       }
     } else if (type === 'edit') {
       // show add/edit box
@@ -305,11 +305,11 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   // check if topic name is valid by kafka
   $scope.checkIskafkaTopicValid = function (value) {
     if (value) {
-      if(value.length > 255) {
+      if (value.length > 255) {
         return 'Max length is 255 characters!'
       }
-      for(let char of value) {
-        if(!/[a-zA-Z0-9\\._\\-]/.test(char)) {
+      for (const char of value) {
+        if (!/[a-zA-Z0-9\\._\\-]/.test(char)) {
           return 'Not valid topic name! Only letters, numbers, . (dot), _ (underscore), - (minus) can be used!'
         }
       }
@@ -323,7 +323,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     if (value !== '' && value !== undefined) {
       const codes = value.split(',')
       for (const code of codes) {
-        const validRangeCodes = ["1**", "2**", "3**", "4**", "5**"];
+        const validRangeCodes = ['1**', '2**', '3**', '4**', '5**']
         if (Number(code) <= 100 || Number(code) >= 599) {
           return `${code} not a valid status code!`
         } else if (code.includes('*') && !validRangeCodes.includes(code)) {

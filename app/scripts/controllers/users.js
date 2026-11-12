@@ -90,6 +90,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     Alerting.AlertReset()
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: usersmodal,
       controller: UsersModalCtrl,
       resolve: {
@@ -103,6 +105,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     Alerting.AlertReset()
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: usersmodal,
       controller: UsersModalCtrl,
       resolve: {
@@ -125,6 +129,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     }
 
     const modalInstance = $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

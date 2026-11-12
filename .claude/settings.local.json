@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk npm *)",
+      "Bash(rtk read *)",
+      "Bash(npm install *)",
+      "Bash(npm test *)",
+      "Bash(npm audit *)",
+      "Bash(npm i *)",
+      "Bash(rtk grep *)",
+      "Bash(rtk npx *)"
+    ]
+  }
+}

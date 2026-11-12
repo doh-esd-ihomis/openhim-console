@@ -36,6 +36,8 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
     Alerting.AlertReset()
 
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: mediatorConfigModal,
       controller: MediatorConfigModalCtrl,
       resolve: {

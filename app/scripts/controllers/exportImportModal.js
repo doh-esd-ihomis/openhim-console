@@ -147,6 +147,8 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
   $scope.viewRecordDetails = function (event, type, content) {
     event.preventDefault()
     $uibModal.open({
+      backdrop: 'static',
+      keyboard: false,
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
