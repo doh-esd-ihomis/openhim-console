@@ -1,5 +1,5 @@
 # Build Production Console in Node
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 RUN apk add git
 
@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 RUN npm run prepare
 

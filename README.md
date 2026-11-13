@@ -225,3 +225,9 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
 You may view/add issues here: <https://github.com/jembi/openhim-console/issues>
 
 To contribute code, please fork the repository and submit a pull request. The maintainers will review the code and merge it in if all is well.
+
+
+docker build -t asia-southeast1-docker.pkg.dev/proj-nthc-dev/docker-hub/openhim-console:1.19.0 . --no-cache
+
+docker push asia-southeast1-docker.pkg.dev/proj-nthc-dev/docker-hub/openhim-console:1.19.0
+

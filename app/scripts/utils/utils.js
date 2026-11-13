@@ -75,6 +75,9 @@ export function beautifyIndent(type, content) {
 }
 
 export function isCoreVersionCompatible(minVersion, actualVersion) {
+	if (!minVersion || !actualVersion) {
+		return false;
+	}
 	const v1 = minVersion.split('.');
 	const v2 = actualVersion.split('.');
 
